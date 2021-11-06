@@ -1,0 +1,15 @@
+div.alwaysbreak { page-break-before: always; }
+div.nobreak:before { clear:both; }
+.nobreak { page-break-inside: avoid; }
+
+.no-page-break{
+    display:block; 
+    clear:both; 
+    page-break-inside: avoid;
+}
+
+.page-break{
+    display:block; 
+    clear:both; 
+    page-break-after: always;
+}

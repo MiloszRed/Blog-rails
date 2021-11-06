@@ -1,0 +1,13 @@
+<%= form_for([:admin, @post, @post.comments.build]) do |form| %>
+
+  <div class="field mb-3 w-50">
+    <%= form.label :body %>
+    <%= form.text_area :body, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-secondary" %>
+  </div>
+<% end %>
+
+<br>

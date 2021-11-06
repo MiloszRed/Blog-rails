@@ -1,0 +1,16 @@
+<h1>Posts</h1>
+
+<% @posts.each do |post| %>
+  <div class="card w-75 mb-3">
+    <div class="card-body">
+      
+        <h5 class="card-title"> <%= post.title %> </h5>
+        <p class="card-text"> <%= post.body %> </p>
+        <%= link_to 'Read more', admin_post_path(post), class: "btn btn-secondary" %>
+    </div>
+  </div>
+<% end %>
+
+<%= link_to 'Create PDF', admin_posts_path(format: :pdf), class: "btn btn-dark", target: :_blank %>
+<br />
+<br />

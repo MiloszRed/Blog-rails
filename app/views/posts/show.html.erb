@@ -1,0 +1,16 @@
+<div class="card w-75">
+  <div class="card-body">
+    <h5 class="card-title"> <%= @post.title %> </h5>
+    <p class="card-text"> <%= @post.body %> </p>
+
+    
+    <%= link_to 'Back', posts_path, class: "btn btn-dark" %>
+    <%= link_to 'Create PDF', post_path(@post, format: :pdf), class: "btn btn-dark", target: :_blank %>
+  </div>
+</div>
+
+<br />
+<%= render 'comments/index' %>
+<br />
+<%= render 'comments/new' %>
+
