@@ -104,6 +104,7 @@ const actions = {
         commit('updateSignedIn', localStorage.getItem("signedIn"))
         commit('updateUserId', localStorage.getItem("userId"))
         commit('updateErrorsReload')
+        commit('updateSuccessReload')
     }
 };
 

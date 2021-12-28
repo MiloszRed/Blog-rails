@@ -37,10 +37,9 @@ class Api::V1::Admin::PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     authorize @post
-    puts @post.image_url
 
     if @post.save
-      render json: @post, status: :created, location: api_v1_posts_path(@post)
+      render json: @post, status: :created, location: api_v1_posts_path(@post), methods: [:image_urls]
     else
       render json: @post.errors, status: :unprocessable_entity
     end
@@ -72,7 +71,7 @@ class Api::V1::Admin::PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :body)
+      params.require(:post).permit(:title, :body, images: [])
     end
 
 end

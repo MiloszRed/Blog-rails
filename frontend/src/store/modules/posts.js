@@ -27,12 +27,7 @@ const actions = {
         commit('setComments', response.data)
     },
     addPost({ commit }, post) {
-        axios.post(api_url_admin,{
-                post: {
-                    title: post.title,
-                    body: post.body,
-                }
-            }, { withCredentials: true })
+        axios.post(api_url_admin, post, { withCredentials: true })
         .then((response) => {
             console.log(response)       
             commit('newPost', response.data);
@@ -54,14 +49,17 @@ const actions = {
                 }
             }, { withCredentials: true })
         .then((response) => {
-            commit('newPost', response.data);
+            commit('newComment', response.data);
         })
         .catch((error) => {
             console.log(error.response)
             if(error.response.status == 422)
                 commit('setErrorPost', error.response.data.errors)
             else if(error.response.status == 401)
+            {
                 router.push("/sign_in")
+                commit('setErrorPost', error.response.data.errors)
+            }
         });
     },
     deleteComment({ commit }, post) {

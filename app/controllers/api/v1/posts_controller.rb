@@ -16,7 +16,7 @@ class Api::V1::PostsController < ApplicationController
     @posts = Post.all
     #authorize @posts
 
-    render json: @posts
+    render json: @posts, methods: [:image_urls]
   end
 
   # GET /posts/1 or /posts/1.json
@@ -71,7 +71,7 @@ class Api::V1::PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :body)
+      params.require(:post).permit(:title, :body, images: [])
     end
 
 end

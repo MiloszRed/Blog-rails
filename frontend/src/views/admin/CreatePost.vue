@@ -9,8 +9,10 @@
             <input type="text" v-model="body" placeholder="Content..." class="form-control"/>
         </div>
 
+        <input type="file" name="images" id="images" placeholder="images" multiple/>
+
         <div class="actions">
-            <input type="submit" value="Submit" class="btn btn-secondary"/>
+            <input type="submit" value="Submit" class="btn btn-secondary mt-3"/>
         </div>
     </form>
 </template>
@@ -34,11 +36,16 @@ export default {
         ...mapActions(['addPost']),
         onSubmit(event) {
             event.preventDefault();
-            const post = {  
-                title: this.title,
-                body: this.body  
+            const form = event.target
+            const formData = new FormData()
+            formData.append('post[title]', this.title)
+            formData.append('post[body]', this.body)
+            for (let i = 0; i < form.images.files.length; i++) {
+                formData.append('post[images][]', form.images.files[i], form.images.files[i].name)
             }
-            this.addPost(post);     
+
+            this.addPost(formData)
+    
             this.title = "";
             this.body = "";
         }

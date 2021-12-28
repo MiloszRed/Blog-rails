@@ -4,6 +4,17 @@
         <div class="card-body">
             <h5 class="card-title fw-bold" v-if="allPosts != undefined && allPosts.length != 0"> {{ allPosts.find(post => post.id == id).title }} </h5>
             <p class="card-text" v-if="allPosts != undefined && allPosts.length != 0"> {{ allPosts.find(post => post.id == id).body }}  </p>
+
+            <section class="">
+                <div class="row">
+                    <div  v-for="image_url in allPosts.find(post => post.id == id).image_urls" :key="image_url" class="col-lg-4 col-md-12 mb-4">
+                        <div class="bg-image hover-overlay ripple shadow-1-strong rounded" data-ripple-color="light">
+                            <img
+                                :src="image_url" class="w-100" />
+                        </div>
+                    </div>
+                </div>
+            </section>
             
             <router-link to="/" class="btn btn-dark me-1" >Back</router-link>
             <button @click="createPDF" class="btn btn-dark me-1" >Create PDF</button>
@@ -67,10 +78,10 @@ export default {
             }
             this.deleteComment(post);
         },
-        onSubmit(){
+        onSubmit(e){
+            e.preventDefault();
             const post = {
                 body: this.comment,
-                token: this.token,
                 id: this.id
             }
             this.addComment(post);
@@ -80,7 +91,7 @@ export default {
                     margin: 1,
                     filename: 'document.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { dpi: 192, letterRendering: true },
+                    html2canvas: { dpi: 192, letterRendering: true, useCORS: true },
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' 
                 }
 			})
