@@ -13,6 +13,7 @@ class Admin::PostsController < ApplicationController
     # GET /posts or /posts.json
     def index
       @posts = Post.all
+      authorize @posts
       respond_to do |format|
         format.html
         format.pdf do
@@ -35,6 +36,7 @@ class Admin::PostsController < ApplicationController
     def new
       #if current_user.admin
         @post = Post.new
+        authorize @post
       #else
        # redirect_to posts_path, notice: "Not Authorized User"
       #end 
@@ -48,6 +50,7 @@ class Admin::PostsController < ApplicationController
     # POST /posts or /posts.json
     def create
       @post = Post.new(post_params)
+      authorize @post
   
       respond_to do |format|
         if @post.save

@@ -7,6 +7,7 @@ class PostsController < ApplicationController
   # GET /posts or /posts.json
   def index
     @posts = Post.all
+    authorize @posts
     if user_signed_in? && current_user.admin?
       redirect_to admin_posts_path
     end
@@ -32,6 +33,7 @@ class PostsController < ApplicationController
   def new
     #if current_user.admin
       @post = Post.new
+      authorize @post
     #else
      # redirect_to posts_path, notice: "Not Authorized User"
     #end 
@@ -39,7 +41,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
-      redirect_to @post, notice: "Not Authorized User" 
+      redirect_to @post, notice: "Not Authorized User"      
   end
 
   def destroy

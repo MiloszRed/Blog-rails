@@ -11,6 +11,9 @@
     
     <title>Blog</title>
 
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
   </head>
   <body>
     <% if user_signed_in? && current_user.admin? %>

@@ -3,6 +3,15 @@
     <h5 class="card-title"> <%= @post.title %> </h5>
     <p class="card-text"> <%= @post.body %> </p>
 
+     <div class="row">
+      <%  @post.images.each do |image| %>
+        <div class="col-lg-4 col-md-12 mb-4">
+          <div class="bg-image hover-overlay ripple shadow-1-strong rounded" data-ripple-color="light">
+            <%= image_tag(image, style: 'width:100%; height:auto') %>
+          </div>
+        </div>
+      <% end %>
+    </div>
     
     <%= link_to 'Back', posts_path, class: "btn btn-dark" %>
     <%= link_to 'Create PDF', post_path(@post, format: :pdf), class: "btn btn-dark", target: :_blank %>

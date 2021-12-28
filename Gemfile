@@ -29,6 +29,8 @@ gem 'concurrent-ruby', '~> 1.0'
 gem 'mini_portile2', '~> 2.6.1'
 gem 'nokogiri', '~> 1.12.5'
 gem 'i18n', '~> 1.8.10'
+#gem 'devise_token_auth'
+gem 'jwt'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -39,6 +41,8 @@ gem 'i18n', '~> 1.8.10'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
+
+gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -23,6 +23,7 @@ RUN curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import -
 #RUN /bin/bash -l -c "sudo chmod 777 /etc/resolv.conf"
 #RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf
 #RUN gpg2 --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+RUN echo ""
 RUN curl -L https://get.rvm.io | bash -s stable
 RUN /bin/bash -l -c "echo "source $HOME/.rvm/scripts/rvm" >> ~/.bash_profile"
 RUN /bin/bash -l -c "echo 'source ~/.rvm/scripts/rvm' >> ~/.bashrc"
@@ -34,15 +35,10 @@ RUN /bin/bash -l -c "gem install bundler"
 COPY Gemfile /home/hosting/blog
 COPY Gemfile.lock /home/hosting/blog
 RUN /bin/bash -l -c "bundle install"
-RUN sudo apt-get install xvfb
-RUN sudo ln -s /usr/bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
 #RUN /bin/bash -l -c "rails webpacker:install"
 #RUN chmod -R 777 /var/lib/gems/2.7.0/gems/wkhtmltopdf-binary-0.12.6.5/bin/
 #RUN /bin/bash -l -c "rvm reset"
 
-#COPY Gemfile /home/hosting/blog
-#COPY Gemfile.lock /home/hosting/blog
-#RUN /bin/bash -l -c "bundle install"
 EXPOSE 3000
 
 CMD ["rails", "server", "-b", "0.0.0.0"]

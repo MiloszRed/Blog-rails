@@ -76,6 +76,11 @@ Rails.application.configure do
 
   config.assets.compile = true
 
+  config.debug_exception_response_format = :api
+
+  Rails.application.routes.default_url_options[:host] = 'localhost'
+  Rails.application.routes.default_url_options[:port] = 3000
+
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 end

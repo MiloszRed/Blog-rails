@@ -31,6 +31,7 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @comment = @post.comments.create(comment_params)
     @comment.user = current_user if current_user
+    @comment.username = @comment.user.email.split('@')[0].capitalize
     @comment.save
     authorize @comment
 
