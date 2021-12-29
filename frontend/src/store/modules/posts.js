@@ -1,7 +1,5 @@
 import axios from 'axios';
 import router from '@/router';
-const api_url = "http://localhost:3000/api/v1/posts";
-const api_url_admin = "http://localhost:3000/api/v1/admin/posts";
 
 const state = {
     posts: [],
@@ -19,23 +17,21 @@ const getters = {
 
 const actions = {
     async fetchPosts({ commit }) {
-        const response = await axios.get(api_url);
+        const response = await axios.get(process.env.VUE_APP_API_URL);
         commit('setPosts', response.data)
     },
     async fetchComments({ commit }, id) {
-        const response = await axios.get(api_url + `/${id}/comments`);
+        const response = await axios.get(process.env.VUE_APP_API_URL + `/${id}/comments`);
         commit('setComments', response.data)
     },
     addPost({ commit }, post) {
-        axios.post(api_url_admin, post, { withCredentials: true })
-        .then((response) => {
-            console.log(response)       
+        axios.post(process.env.VUE_APP_API_ADMIN_URL, post, { withCredentials: true })
+        .then((response) => {     
             commit('newPost', response.data);
             commit('setSuccessPost', "Post successfully created");
             router.push("/")
         })
         .catch((error) => {
-            console.log(error.response)
             if(error.response.status == 422)
                 commit('setErrorPost', error.response.data.errors)
             else if(error.response.status == 401)
@@ -43,7 +39,7 @@ const actions = {
         });
     },
     addComment({ commit }, post) {
-        axios.post(api_url + `/${post.id}/comments`,{
+        axios.post(process.env.VUE_APP_API_URL + `/${post.id}/comments`,{
                 comment: {
                     body: post.body
                 }
@@ -52,7 +48,6 @@ const actions = {
             commit('newComment', response.data);
         })
         .catch((error) => {
-            console.log(error.response)
             if(error.response.status == 422)
                 commit('setErrorPost', error.response.data.errors)
             else if(error.response.status == 401)
@@ -63,13 +58,11 @@ const actions = {
         });
     },
     deleteComment({ commit }, post) {
-        axios.delete(api_url + `/${post.postId}/comments/${post.commentId}`, { withCredentials: true })
-        .then((response) => {
-            console.log(response)
+        axios.delete(process.env.VUE_APP_API_URL + `/${post.postId}/comments/${post.commentId}`, { withCredentials: true })
+        .then(() => {
             commit('deleteComment', post.commentId);
         })
         .catch((error) => {
-            console.log(error.response)
             if(error.response.status == 422)
                 commit('setErrorPost', error.response.data.errors)
             else if(error.response.status == 401)
@@ -77,15 +70,13 @@ const actions = {
         });
     },
     deletePost({ commit }, post) {
-        axios.delete(api_url_admin + `/${post.id}`, { withCredentials: true })
-        .then((response) => {
-            console.log(response)
+        axios.delete(process.env.VUE_APP_API_ADMIN_URL + `/${post.id}`, { withCredentials: true })
+        .then(() => {
             commit('removePost', post.id);
             commit('setSuccessPost', "Post successfully deleted");
             router.push("/")
         })
         .catch((error) => {
-            console.log(error.response)
             if(error.response.status == 422)
                 commit('setErrorPost', error.response.data.errors)
             else if(error.response.status == 401)
@@ -93,20 +84,18 @@ const actions = {
         });
     },
     updatePost({ commit }, post) {
-        axios.put(api_url_admin + `/${post.id}`,{
+        axios.put(process.env.VUE_APP_API_ADMIN_URL + `/${post.id}`,{
             post: {
                 title: post.title,
                 body: post.body
             }
         }, { withCredentials: true })
-        .then((response) => {
-            console.log(response)       
+        .then((response) => {     
             commit('setUpdatedPost', response.data);
             commit('setSuccessPost', "Post successfully updated");
             router.push("/posts/" + `${post.id}`)
         })
         .catch((error) => {
-            console.log(error.response)
             if(error.response.status == 422)
                 commit('setErrorPost', error.response.data.errors)
             else if(error.response.status == 401)

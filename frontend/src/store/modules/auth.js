@@ -1,6 +1,5 @@
 import axios from 'axios';
 import router from '@/router'
-const api_url = "http://localhost:3000/users";
 
 const state = {
     admin: false,
@@ -20,15 +19,13 @@ const getters = {
 
 const actions = {
     signin({ commit }, authData) {
-        axios.post(api_url + '/sign_in', {
+        axios.post(process.env.VUE_APP_API_USERS_URL + '/sign_in', {
             user: {
                 email: authData.email,
                 password: authData.password,
             }
         }, { withCredentials: true })
         .then((response) => {
-            console.log(response);
-            console.log(response.data);
             commit('updateAdmin', response.data.admin)
             commit('updateSignedIn', response.data.signedIn)
             commit('updateUserId', response.data.userId)
@@ -36,12 +33,11 @@ const actions = {
             router.push("/");
         })
         .catch((error) => {
-            console.log(error.message)
-            commit('updateErrors', error.response.data.errors)
+            commit('updateErrors', error.response.data.errors['err'])
         });
     },
     signup({ commit }, authData) {
-        axios.post(api_url,
+        axios.post(process.env.VUE_APP_API_USERS_URL,
             {
                 user: {
                     email: authData.email,
@@ -50,17 +46,19 @@ const actions = {
                 }
             }, { withCredentials: true })
         .then((response) => {
-            console.log(response)
-            console.log(response.data)
             commit('updateAdmin', response.data.admin)
             commit('updateSignedIn', response.data.signedIn)
             commit('updateUserId', response.data.userId)
             commit('updateSuccess', "Successfully Signed Up")
             router.push('/')
+        })
+        .catch((error) => {
+            for(const err in error.response.data.errors)
+                commit('updateErrors', err +" "+ error.response.data.errors[err])
         });
     },
     editProfile({ commit }, authData) {
-        axios.put(api_url,
+        axios.put(process.env.VUE_APP_API_USERS_URL,
             {
                 user: {
                     current_password: authData.current_password,
@@ -69,18 +67,14 @@ const actions = {
                     user_id: authData.userId
                 }
             }, { withCredentials: true })
-        .then((response) => {
-            console.log(response)
-            console.log(response.data)
+        .then(() => {
             commit('updateSuccess', "Successfully changed password")
             router.push('/')
         });
     },
     cancelProfile({ commit }) {
-        axios.delete(api_url, { withCredentials: true })
-        .then((response) => {
-            console.log(response)
-            console.log(response.data)
+        axios.delete(process.env.VUE_APP_API_USERS_URL, { withCredentials: true })
+        .then(() => {
             commit('updateSuccess', "Successfully canceled account")
             commit('updateAdmin', false)
             commit('updateSignedIn', false)
@@ -88,12 +82,11 @@ const actions = {
             router.push('/')
         })
         .catch((error) => {
-            console.log(error.message)
             commit('updateErrors', error.response.data.errors)
         });
     },
     signout({ commit }){
-        axios.delete(api_url + '/sign_out', { withCredentials: true })
+        axios.delete(process.env.VUE_APP_API_USERS_URL + '/sign_out', { withCredentials: true })
         commit('updateAdmin', false)
         commit('updateSignedIn', false)
         commit('updateUserId', null)
@@ -105,7 +98,7 @@ const actions = {
         commit('updateUserId', localStorage.getItem("userId"))
         commit('updateErrorsReload')
         commit('updateSuccessReload')
-    }
+    },
 };
 
 const mutations = {

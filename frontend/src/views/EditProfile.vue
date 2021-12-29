@@ -8,7 +8,7 @@
 
     <div class="field mb-3">
         <label for="password-confirmation" class="form-label">New Password confirmation</label>
-        <input type="password" v-model="password_confirmation" class="form-control">
+        <input type="password" v-model="passwordConfirmation" class="form-control">
     </div>
 
     <div class="field mb-3">
@@ -38,7 +38,7 @@ export default {
             name: "",
             email: "",
             password: "",
-            password_confirmation: "",
+            passwordConfirmation: "",
             currentPassword: ""
         };
     },
@@ -49,15 +49,15 @@ export default {
         ...mapActions(['signup']),
         change(){
             const authData = {
-                current_password: this.currentPassword,
+                currentPassword: this.currentPassword,
                 password: this.password,
-                password_confirmation: this.password_confirmation,
+                passwordConfirmation: this.passwordConfirmation,
                 userId: this.userId
             }
             this.$store.dispatch('editProfile', authData)
             this.currentPassword = ''
             this.password = ''
-            this.password_confirmation = ''
+            this.passwordConfirmation = ''
         },
         cancel() {
             this.$store.dispatch('cancelProfile')

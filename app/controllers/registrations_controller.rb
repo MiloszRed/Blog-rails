@@ -18,7 +18,7 @@ class RegistrationsController < Devise::RegistrationsController
             cookies.signed[:refresh_token] = {value: refresh_token.crypted_token, httponly: true}
             render json: { admin: false, signedIn: true, userId: user.id }
         else
-            render json: { errors: { 'email or password' => ['is invalid'] } }, status: :unprocessable_entity
+            render json: { errors: user.errors }, status: :unprocessable_entity
         end
     end
 

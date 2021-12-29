@@ -1,6 +1,6 @@
 <template>
     <h1>Create Post</h1>
-    <form @submit="onSubmit">
+    <form @submit.prevent="onSubmit">
         <div class="field mb-3">
             <input type="text" v-model="title" placeholder="Add Title..." class="form-control"/>
         </div>
@@ -35,7 +35,6 @@ export default {
     methods: {
         ...mapActions(['addPost']),
         onSubmit(event) {
-            event.preventDefault();
             const form = event.target
             const formData = new FormData()
             formData.append('post[title]', this.title)

@@ -1,6 +1,6 @@
 <template>
     <h1>Update Post</h1>
-    <form @submit="onSubmit">
+    <form @submit.prevent="onSubmit">
         <div class="field mb-3">
             <input type="text" v-model="title" class="form-control"/>
         </div>
@@ -34,8 +34,7 @@ export default {
     },
     methods: {
         ...mapActions(['updatePost']),
-        onSubmit(event) {
-            event.preventDefault();
+        onSubmit() {
             const post = {  
                 id: this.id,
                 title: this.title,

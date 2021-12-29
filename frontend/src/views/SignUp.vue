@@ -1,4 +1,8 @@
 <template>
+    <div v-for="error in errorsAuth" :key="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ error }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <h2>Sign Up</h2>
 
     <div class="field mb-3">
@@ -23,7 +27,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 // import axios from 'axios';
 // import router from '../router';
 
@@ -49,20 +53,12 @@ export default {
             this.password = ''
             this.password_confirmation = ''
         }
-        // signup() {
-        //     axios.post("http://localhost:3000/users",
-        //         {
-        //             user:{
-        //                 email: this.email,
-        //                 password: this.password,
-        //                 password_confirmation: this.password_confirmation,
-        //             }
-        //         })
-        //     .then((response) => {
-        //         console.log(response)
-        //         router.push('/')
-        //     });
-        // },
+    },
+    computed: {
+    ...mapGetters(['errorsAuth']),
+    },
+    mounted() {
+        this.$store.dispatch('reload')
     }
 }
 </script>

@@ -2,12 +2,12 @@
 <div ref="document">
     <div class="card w-75">
         <div class="card-body">
-            <h5 class="card-title fw-bold" v-if="allPosts != undefined && allPosts.length != 0"> {{ allPosts.find(post => post.id == id).title }} </h5>
-            <p class="card-text" v-if="allPosts != undefined && allPosts.length != 0"> {{ allPosts.find(post => post.id == id).body }}  </p>
+            <h5 class="card-title fw-bold" v-if="allPosts != undefined && allPosts.length != 0"> {{ post.title }} </h5>
+            <p class="card-text" v-if="allPosts != undefined && allPosts.length != 0"> {{ post.body }}  </p>
 
             <section class="">
                 <div class="row">
-                    <div  v-for="image_url in allPosts.find(post => post.id == id).image_urls" :key="image_url" class="col-lg-4 col-md-12 mb-4">
+                    <div  v-for="image_url in post.image_urls" :key="image_url" class="col-lg-4 col-md-12 mb-4">
                         <div class="bg-image hover-overlay ripple shadow-1-strong rounded" data-ripple-color="light">
                             <img
                                 :src="image_url" class="w-100" />
@@ -20,8 +20,8 @@
             <button @click="createPDF" class="btn btn-dark me-1" >Create PDF</button>
             <router-link :to="{ name: 'UpdatePost', params: { 
                     id: id,
-                    title2: allPosts.find(post => post.id == id).title,
-                    body2: allPosts.find(post => post.id == id).body  
+                    title2: post.title,
+                    body2: post.body  
                 }}" v-if="admin != 'false' && admin" class="btn btn-primary me-1" >Update</router-link>
             <button v-if="admin != 'false' && admin" @click="removePost()" class="btn btn-danger" >Delete</button>
         </div>
@@ -39,7 +39,7 @@
     </div>
     <br />
     <h4 class="fw-bold ">Add comment</h4>
-    <form @submit="onSubmit" class="w-75 mb-3">
+    <form @submit.prevent="onSubmit" class="w-75 mb-3">
         <div class="field mb-3">
             <textarea type="text" v-model="comment" placeholder="Conmment..." class="form-control"/>
         </div>
@@ -60,7 +60,8 @@ export default {
     props: ['id'],
     data() {
         return {
-            comment: ""
+            comment: "",
+            post: "",
         }
     },
     methods: {
@@ -78,8 +79,7 @@ export default {
             }
             this.deleteComment(post);
         },
-        onSubmit(e){
-            e.preventDefault();
+        onSubmit(){
             const post = {
                 body: this.comment,
                 id: this.id
@@ -103,6 +103,9 @@ export default {
     created() {
         this.fetchPosts();
         this.fetchComments(this.id);
+    },
+    mounted() {
+        this.post = this.allPosts.find(post => post.id == this.id)
     }
 }
 </script>

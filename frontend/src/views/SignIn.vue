@@ -1,4 +1,9 @@
 <template>
+    <div v-for="error in errorsAuth" :key="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ error }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <h2>Sign In</h2>
 
     <div class="field mb-3">
@@ -18,7 +23,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     data() {
@@ -39,6 +44,12 @@ export default {
             this.email = '';
             this.password = '';
         }
+    },
+    computed: {
+    ...mapGetters(['errorsAuth']),
+    },
+    mounted() {
+        this.$store.dispatch('reload')
     }
 }
 </script>
